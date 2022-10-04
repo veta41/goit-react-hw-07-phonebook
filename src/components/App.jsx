@@ -3,10 +3,18 @@ import { Box } from 'components/Box';
 import ContactForm from "./ContactForm/ContactForm";
 import Filter from "./Filter/Filter";
 import ContactList from "./Contacts/ContactList";
+import { useDispatch } from 'react-redux';
+import { fetchContacts } from 'redux/contacts/operations';
+import { useEffect } from 'react';
 
 
 
 function App(){
+  const dispatch = useDispatch();
+  fetchContacts();
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
     return (
   <Box

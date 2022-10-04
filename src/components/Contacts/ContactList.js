@@ -4,11 +4,18 @@ import ContactListItem from '../Contacts/ContactItem/ContactItem';
 import { List } from './ContactList.styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchContacts } from 'redux/contacts/operations';
-import { selectContacts, selectFilter } from 'redux/contacts/contactsSelector';
+import {
+  selectContacts,
+  selectError,
+  selectFilter,
+  selectIsLoading,
+} from 'redux/contacts/contactsSelector';
 import { useEffect } from 'react';
 
 const ContactList = () => {
   const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
@@ -27,11 +34,11 @@ const ContactList = () => {
 
   return (
     <List>
+      {isLoading && !error && <p>Loading contacts...</p>}
+      {error && <p>{error}</p>}
       {contactsList.length > 0 ? (
-        contactsList.map(({ name, id, number }) => {
-          return (
-            <ContactListItem key={id} name={name} number={number} id={id} />
-          );
+        contactsList.map(({ name, id, phone }) => {
+          return <ContactListItem key={id} name={name} phone={phone} id={id} />;
         })
       ) : (
         <p>Contact list is empty</p>
@@ -45,7 +52,7 @@ ContactList.propTypes = {
     PropTypes.exact({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
     })
   ),
 };

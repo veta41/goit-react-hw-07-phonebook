@@ -10,9 +10,9 @@ import { addContact, deleteContact, fetchContacts } from './operations';
 
 const initialState = {
   items: [],
-  isLoading: false,
-  error: null,
   filter: '',
+  isLoading: true,
+  error: null,
 };
 
 const contactsSlice = createSlice({
@@ -57,7 +57,9 @@ const contactsSlice = createSlice({
     [deleteContact.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
-      const index = state.items.findIndex(task => task.id === action.payload);
+      const index = state.items.findIndex(
+        contact => contact.id === action.payload
+      );
       state.items.splice(index, 1);
     },
     [deleteContact.pending](state) {
